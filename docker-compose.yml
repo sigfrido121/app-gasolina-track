@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: gasolina_db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - ./mongodb_data:/data/db
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gasolina_app
+    restart: always
+    env_file:
+      - .env.production
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    # El puerto 3000 no necesita estar expuesto al host si usamos túnel, 
+    # pero lo dejamos para pruebas locales si fuera necesario.
+    # ports:
+    #   - "3080:3000"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: gasolina_tunnel
+    restart: always
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

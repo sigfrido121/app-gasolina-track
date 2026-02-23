@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+build
+.git
+.env*
+!.env.production
+README.md
+GUIA_DESPLIEGUE.md
+Dockerfile
+docker-compose.yml
