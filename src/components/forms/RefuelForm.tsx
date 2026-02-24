@@ -55,24 +55,27 @@ export default function RefuelForm({ initialData, onCancel }: RefuelFormProps) {
 
         const newData = { ...data };
 
-        if (lastField === 'amount' || lastField === 'liters') {
+        // Simple rule: with 3 linked values (amount = liters × price),
+        // when one changes, recalculate ONE other. Priority:
+        // - If amount or liters changed → recalculate pricePerLiter
+        // - If pricePerLiter changed → recalculate liters (if amount exists), else amount
+
+        if (lastField === 'amount') {
+            if (!isNaN(amount) && !isNaN(liters) && liters !== 0) {
+                newData.pricePerLiter = (amount / liters).toFixed(3);
+            }
+        } else if (lastField === 'liters') {
             if (!isNaN(amount) && !isNaN(liters) && liters !== 0) {
                 newData.pricePerLiter = (amount / liters).toFixed(3);
             }
         } else if (lastField === 'pricePerLiter') {
-            if (!isNaN(price) && !isNaN(amount) && price !== 0) {
-                newData.liters = (amount / price).toFixed(2);
-            } else if (!isNaN(price) && !isNaN(liters)) {
-                newData.amount = (liters * price).toFixed(2);
+            if (!isNaN(price) && price !== 0) {
+                if (!isNaN(amount)) {
+                    newData.liters = (amount / price).toFixed(2);
+                } else if (!isNaN(liters)) {
+                    newData.amount = (liters * price).toFixed(2);
+                }
             }
-        }
-
-        if (lastField === 'liters' && !isNaN(liters) && !isNaN(price)) {
-            newData.amount = (liters * price).toFixed(2);
-        }
-
-        if (lastField === 'amount' && !isNaN(amount) && !isNaN(price) && price !== 0) {
-            newData.liters = (amount / price).toFixed(2);
         }
 
         return newData;
