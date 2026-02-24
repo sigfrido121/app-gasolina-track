@@ -2,6 +2,9 @@ import { getRefuels } from '@/actions/refuel-actions';
 import { Fuel, History, TrendingUp } from 'lucide-react';
 import DashboardContainer from '@/components/DashboardContainer';
 
+// Force dynamic rendering — never cache this page (it depends on DB data)
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const { data: refuels } = await getRefuels();
 
