@@ -32,15 +32,15 @@ export default function DashboardContainer({ refuels }: DashboardContainerProps)
                 {/* Chart Section */}
                 <div className="glass p-6 rounded-2xl">
                     <div className="flex items-center justify-between mb-6">
-                        <h3 className="font-semibold text-lg">Evolución de Gasto y KM</h3>
+                        <h3 className="font-semibold text-lg">Eficiencia y Coste</h3>
                         <div className="flex gap-4 text-xs">
                             <div className="flex items-center gap-1.5">
                                 <div className="w-3 h-3 rounded-full bg-blue-500" />
-                                <span>Gasto (€)</span>
+                                <span>L/100km</span>
                             </div>
                             <div className="flex items-center gap-1.5">
-                                <div className="w-3 h-3 rounded-full bg-green-500" />
-                                <span>Kilómetros</span>
+                                <div className="w-3 h-3 rounded-full bg-amber-500" />
+                                <span>€/100km</span>
                             </div>
                         </div>
                     </div>

@@ -79,13 +79,14 @@ export default function RefuelForm({ initialData, onCancel }: RefuelFormProps) {
     };
 
     const handleInputChange = (field: string, value: any) => {
-        setFormData(prev => {
-            const updated = { ...prev, [field]: value };
-            if (['amount', 'liters', 'pricePerLiter'].includes(field)) {
-                return calculateMissing(updated, field);
-            }
-            return updated;
-        });
+        // Only update the field being typed — no auto-calculation on keystroke
+        setFormData(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleBlurCalculate = (field: string) => {
+        if (['amount', 'liters', 'pricePerLiter'].includes(field)) {
+            setFormData(prev => calculateMissing(prev, field));
+        }
     };
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,6 +199,7 @@ export default function RefuelForm({ initialData, onCancel }: RefuelFormProps) {
                                 type="text"
                                 value={formData.amount}
                                 onChange={e => handleInputChange('amount', e.target.value)}
+                                onBlur={() => handleBlurCalculate('amount')}
                                 className="w-full bg-secondary/50 border-none rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/50"
                                 placeholder="0.00"
                             />
@@ -209,6 +211,7 @@ export default function RefuelForm({ initialData, onCancel }: RefuelFormProps) {
                                 type="text"
                                 value={formData.liters}
                                 onChange={e => handleInputChange('liters', e.target.value)}
+                                onBlur={() => handleBlurCalculate('liters')}
                                 className="w-full bg-secondary/50 border-none rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none transition-all placeholder:text-muted-foreground/50"
                                 placeholder="0.00"
                             />
@@ -222,6 +225,7 @@ export default function RefuelForm({ initialData, onCancel }: RefuelFormProps) {
                             type="text"
                             value={formData.pricePerLiter}
                             onChange={e => handleInputChange('pricePerLiter', e.target.value)}
+                            onBlur={() => handleBlurCalculate('pricePerLiter')}
                             className="w-full bg-secondary/50 border-none rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary outline-none transition-all"
                             placeholder="1.50"
                         />
