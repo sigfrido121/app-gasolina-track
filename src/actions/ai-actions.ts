@@ -27,6 +27,10 @@ export async function analyzeRefuelImage(formData: FormData) {
       }
     `;
 
+        if (!visionModel) {
+            return { success: false, message: 'IA no configurada (falta GEMINI_API_KEY)' };
+        }
+
         const result = await visionModel.generateContent([
             prompt,
             {
