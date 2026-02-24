@@ -9,6 +9,8 @@ FROM node:20 AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Provide dummy MONGODB_URI for build-time (Next.js page collection needs it)
+ENV MONGODB_URI=mongodb://localhost:27017/dummy
 RUN npm run build
 
 # Stage 3: Production image

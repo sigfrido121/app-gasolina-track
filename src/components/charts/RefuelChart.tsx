@@ -91,10 +91,10 @@ export default function RefuelChart({ data }: RefuelChartProps) {
                     <Tooltip
                         contentStyle={{ backgroundColor: '#09090b', borderColor: '#27272a', borderRadius: '8px' }}
                         itemStyle={{ fontSize: '12px' }}
-                        formatter={(value: number, name: string) => {
+                        formatter={(value: any, name: any) => {
                             if (name === 'Consumo (L/100km)') return [`${value} L/100km`, name];
                             if (name === 'Coste (€/100km)') return [`${value} €/100km`, name];
-                            return [value, name];
+                            return [`${value}`, name];
                         }}
                     />
                     <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
